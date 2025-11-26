@@ -32,18 +32,24 @@ public class pb1 {
         //b
         for (Integer i : xPlusY) {
             if (y.contains(i)) {
+                zSet.add(i);
             }
-            zSet.add(i);
         }
+        System.out.println("zSet = "+zSet+ "\n");
         //c
         for (Integer i : xMinusY) {
             if (!y.contains(i)) {
                 xMinusY.add(i);
             }
         }
-        System.out.println(xMinusY);
+        System.out.println("xMinusY = "+xMinusY+"\n");
         //d
-
+        for (Integer i : xPlusY) {
+            if (i <= p) {
+                xPlusYLimitedByP.add(i);
+            }
+        }
+        System.out.println("xPlusYLimitedByP = " + xPlusYLimitedByP+"\n");
 
         class Student {
 
@@ -60,7 +66,7 @@ public class pb1 {
             }
 
             double Medie() {
-                return note.stream().mapToInt(x -> x * x).sum();
+                return note.stream().mapToInt(Integer::intValue).average().orElse(0);
             }
 
             long restantieri() {
@@ -85,6 +91,38 @@ public class pb1 {
                 new Student("Stancu Ene", "A2")
         );
         studenti.forEach(System.out::println);
+        System.out.println("\n");
+        //b1
+        Collections.sort(studenti, (a, b) -> {
+            int cmp = a.grupa.compareTo(b.grupa);
+            if (cmp == 0)
+                return a.numePrenume.compareTo(b.numePrenume);
+            return cmp;
+        });
+
+        studenti.forEach(System.out::println);
+        System.out.println("\n");
+
+        //b2
+        List<Student> integralisti = new ArrayList<>();
+        for (Student s : studenti)
+            if (s.trece())
+                integralisti.add(s);
+        integralisti.sort((a, b) -> Double.compare(b.Medie(), a.Medie()));
+
+        System.out.println("Lista integralisti : \n");
+        integralisti.forEach(System.out::println);
+        System.out.println("\n");
+
+        //b3
+        List<Student> restantieri = new ArrayList<>();
+        for (Student s : studenti)
+            if (!s.trece())
+                restantieri.add(s);
+        restantieri.sort(Comparator.comparingLong(s-> s.restantieri()));
+
+        System.out.println("Lista restantieri : \n");
+        restantieri.forEach(System.out::println);
 
     }
 }
